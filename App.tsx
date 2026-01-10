@@ -8,7 +8,8 @@ import ModuleDetail from './components/ModuleDetail';
 import IngestionPipeline from './components/IngestionPipeline';
 import LandingPage from './components/LandingPage';
 import AdminUploader from './components/AdminUploader';
-import { courseData as initialCourseData } from './data/course';
+import AssetTester from './components/AssetTester';
+// Dynamic course data fetching
 
 interface AppContextType {
   theme: ThemeMode;
@@ -18,7 +19,7 @@ interface AppContextType {
   isAuth: boolean;
   setIsAuth: (val: boolean) => void;
   courseTitle: string;
-  courseState: typeof initialCourseData;
+  courseState: { courseTitle: string; weeks: any[] };
   updateAsset: (weekNum: number, assetType: string, value: string) => void;
 }
 
@@ -33,19 +34,12 @@ export const useApp = () => {
 const App: React.FC = () => {
   const [theme, setTheme] = useState<ThemeMode>(ThemeMode.SOLARPUNK);
   const [isAuth, setIsAuth] = useState(false);
-  const [courseState, setCourseState] = useState(initialCourseData);
+  const [courseState, setCourseState] = useState({
+    courseTitle: "AI SecOps Course",
+    weeks: []
+  });
   
-  const initialModules: Module[] = courseState.weeks.map(w => ({
-    id: w.weekNumber.toString(),
-    course_id: 'c1',
-    week_number: w.weekNumber,
-    title: w.title,
-    description: w.description,
-    is_generating: false,
-    generation_status: 'completed' as const
-  }));
-
-  const [modules, setModules] = useState<Module[]>(initialModules);
+  const [modules, setModules] = useState<Module[]>([]);
   const navigate = useNavigate();
 
   const toggleTheme = () => {
@@ -74,6 +68,33 @@ const App: React.FC = () => {
     }));
   };
 
+  // Fetch course data dynamically
+  useEffect(() => {
+    fetch('/data/course.json')
+      .then(response => response.json())
+      .then(data => {
+        setCourseState(data);
+        const initialModules: Module[] = data.weeks.map((w: any) => ({
+          id: w.weekNumber.toString(),
+          course_id: 'c1',
+          week_number: w.weekNumber,
+          title: w.title,
+          description: w.description,
+          is_generating: false,
+          generation_status: 'completed' as const
+        }));
+        setModules(initialModules);
+      })
+      .catch(error => {
+        console.error('Failed to load course data:', error);
+        // Fallback to empty state
+        setCourseState({
+          courseTitle: "AI SecOps Course",
+          weeks: []
+        });
+      });
+  }, []);
+  
   useEffect(() => {
     if (theme === ThemeMode.CYBERPUNK) {
       document.documentElement.classList.add('dark');
@@ -116,6 +137,10 @@ const App: React.FC = () => {
           <Route 
             path="/admin/upload" 
             element={isAuth ? <AdminUploader /> : <Navigate to="/login" />} 
+          />
+          <Route 
+            path="/test-assets" 
+            element={<AssetTester />} 
           />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
