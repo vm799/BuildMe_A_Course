@@ -19,7 +19,7 @@ interface AppContextType {
   setIsAuth: (val: boolean) => void;
   courseTitle: string;
   courseState: typeof initialCourseData;
-  updateAsset: (weekNum: number, assetType: string, path: string) => void;
+  updateAsset: (weekNum: number, assetType: string, value: string) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -52,18 +52,19 @@ const App: React.FC = () => {
     setTheme(prev => prev === ThemeMode.SOLARPUNK ? ThemeMode.CYBERPUNK : ThemeMode.SOLARPUNK);
   };
 
-  const updateAsset = (weekNum: number, assetType: string, path: string) => {
+  const updateAsset = (weekNum: number, assetType: string, value: string) => {
     setCourseState(prev => ({
       ...prev,
       weeks: prev.weeks.map(w => {
         if (w.weekNumber === weekNum) {
+          const key = assetType === 'quiz' ? 'url' : 'path';
           return {
             ...w,
             assets: {
               ...w.assets,
               [assetType]: {
                 ...(w.assets as any)[assetType],
-                path: path
+                [key]: value
               }
             }
           };

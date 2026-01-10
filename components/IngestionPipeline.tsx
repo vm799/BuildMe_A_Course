@@ -26,11 +26,11 @@ const IngestionPipeline: React.FC = () => {
     // Simulated steps
     setTimeout(() => setLogs(prev => [...prev, '[1.2s] Sanitizing Input Data: Removing PII...']), 1000);
     setTimeout(() => setLogs(prev => [...prev, '[2.5s] Context Analysis: Embedding Vector Space mapping...']), 2000);
-    setTimeout(() => setLogs(prev => [...prev, '[4.0s] Gemini 3.0 Pro engaged: Structuring Multimodal Curriculum...']), 3500);
+    setTimeout(() => setLogs(prev => [...prev, '[4.0s] Gemini 3 Pro engaged: Structuring Multimodal Curriculum...']), 3500);
 
     try {
       const result = await generateModuleCurriculum(topic, source);
-      setLogs(prev => [...prev, '[8.0s] Generation Successful. 4 Modules cataloged.', '[9.5s] Review Agent (Gemini 1.5) performing SecOps Fact-Check...']);
+      setLogs(prev => [...prev, '[8.0s] Generation Successful. 4 Modules cataloged.', '[9.5s] Review Agent (Gemini 3) performing SecOps Fact-Check...']);
       
       setTimeout(() => {
         setIsProcessing(false);
