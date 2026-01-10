@@ -1,0 +1,7 @@
+{
+  "name": "BuildMeACourse",
+  "description": "A topic-agnostic LMS that uses an Agentic Ingestion Pipeline to consume high-tier technical content and output structured, multimodal curricula for AI SecOps and beyond.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
