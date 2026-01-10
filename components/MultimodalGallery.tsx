@@ -1,6 +1,7 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ThemeMode } from '../types';
+import { checkFileExists } from '../src/utils/fileChecker';
 
 export type MediaFormat = 'Video' | 'Slides' | 'Infographic' | 'Quiz';
 
@@ -22,6 +23,94 @@ const MultimodalGallery: React.FC<MultimodalGalleryProps> = ({
   onAdminRedirect 
 }) => {
   const isCyber = theme === ThemeMode.CYBERPUNK;
+  const [fileExists, setFileExists] = useState<boolean | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Check file existence on component mount
+  useEffect(() => {
+    const checkFile = async () => {
+      if (!contentSource || contentSource.trim() === '' || contentSource === '/assets/') {
+        setFileExists(false);
+        setIsLoading(false);
+        return;
+      }
+      
+      try {
+        const exists = await checkFileExists(contentSource);
+        setFileExists(exists);
+      } catch (error) {
+        console.warn('Error checking file existence:', error);
+        setFileExists(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    checkFile();
+  }, [contentSource]);
+  
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className={`w-full h-full flex flex-col items-center justify-center p-12 text-center transition-all ${isCyber ? 'bg-zinc-950 text-emerald-500/40' : 'bg-slate-50 text-forest/40'}`}>
+        <div className="relative mb-10">
+          <div className={`absolute inset-0 scale-150 blur-3xl rounded-full opacity-10 animate-pulse ${isCyber ? 'bg-emerald-500' : 'bg-forest'}`}></div>
+          <span className="material-symbols-outlined text-[100px] md:text-[160px] animate-spin">sync</span>
+        </div>
+        <h3 className={`text-3xl md:text-5xl font-black uppercase tracking-tighter mb-4 ${isCyber ? 'text-emerald-500/80' : 'text-forest/80'}`}>
+          Verifying Content Integrity
+        </h3>
+        <p className="max-w-md text-sm md:text-lg leading-relaxed opacity-60 mx-auto italic font-medium">
+          Checking {format.toLowerCase()} availability for Week {week}...
+        </p>
+      </div>
+    );
+  }
+  
+  // Show content under optimization placeholder if file doesn't exist
+  if (fileExists === false) {
+    return (
+      <div className={`w-full h-full flex flex-col items-center justify-center p-12 text-center transition-all ${isCyber ? 'bg-gradient-to-br from-zinc-950 to-black text-emerald-500/60 border-2 border-dashed border-emerald-500/30' : 'bg-gradient-to-br from-slate-50 to-white text-forest/60 border-2 border-dashed border-slate-300'}`}>
+        <div className="relative mb-10">
+          <div className={`absolute inset-0 scale-150 blur-3xl rounded-full opacity-5 animate-pulse ${isCyber ? 'bg-emerald-500' : 'bg-forest'}`}></div>
+          <div className={`relative size-40 rounded-full flex items-center justify-center border-4 ${isCyber ? 'border-emerald-500/30 bg-black/50' : 'border-forest/20 bg-white/50'}`}>
+            <span className="material-symbols-outlined text-6xl">auto_fix_high</span>
+          </div>
+          <div className="absolute -top-2 -right-2 size-8 bg-yellow-500 rounded-full flex items-center justify-center animate-pulse">
+            <span className="material-symbols-outlined text-white text-sm">bolt</span>
+          </div>
+        </div>
+        <h3 className={`text-3xl md:text-5xl font-black uppercase tracking-tighter mb-4 ${isCyber ? 'text-emerald-500' : 'text-forest'}`}>
+          Content Under Optimization
+        </h3>
+        <div className="mb-6">
+          <span className={`inline-block px-6 py-2 rounded-full text-sm font-black uppercase tracking-widest mb-4 ${isCyber ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/30' : 'bg-forest/10 text-forest border border-forest/20'}`}>
+            Week {week} • {format}
+          </span>
+        </div>
+        <p className="max-w-md text-base md:text-lg leading-relaxed opacity-70 mx-auto mb-8 font-medium">
+          This {format.toLowerCase()} content is currently being processed and optimized for your learning experience. Our systems are actively preparing this mission-critical asset.
+        </p>
+        <div className="flex items-center gap-4 mb-10">
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className={`size-3 rounded-full ${isCyber ? 'bg-emerald-500' : 'bg-forest'}`} style={{ animationDelay: `${i * 0.2}s` }}></div>
+          ))}
+        </div>
+        <button 
+          onClick={onAdminRedirect}
+          className={`px-8 py-4 rounded-full text-sm font-black uppercase tracking-widest border transition-all hover:scale-105 active:scale-95 shadow-lg ${isCyber ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20 shadow-emerald-500/20' : 'border-forest/30 bg-forest/5 text-forest hover:bg-forest/10 shadow-forest/20'}`}
+        >
+          <span className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-lg">upload</span>
+            Deploy Optimized Content
+          </span>
+        </button>
+        <div className="mt-8 text-[10px] font-black uppercase tracking-[0.3em] opacity-30">
+          AUTO-HEALING DATA LOADER ACTIVE
+        </div>
+      </div>
+    );
+  }
   
   // Safety Logic: Check if asset path is empty, which implies it needs ingestion
   const isMissing = !contentSource || contentSource.trim() === '' || contentSource === '/assets/';
@@ -71,8 +160,12 @@ const MultimodalGallery: React.FC<MultimodalGalleryProps> = ({
             controls
             playsInline
             preload="metadata"
+            autoPlay={false}
+            muted={false}
+            controlsList="nodownload"
           >
             <source src={contentSource} type="video/mp4" />
+            Your browser does not support the video tag.
           </video>
           <div className="absolute top-8 left-8 pointer-events-none">
              <span className={`px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.3em] border backdrop-blur-2xl ${isCyber ? 'bg-black/60 border-emerald-500/30 text-emerald-500 shadow-2xl shadow-primary/20' : 'bg-white/80 border-forest/10 text-forest shadow-xl shadow-forest/5'}`}>
@@ -85,11 +178,30 @@ const MultimodalGallery: React.FC<MultimodalGalleryProps> = ({
     case 'Slides':
       return (
         <div className={`${containerClasses} bg-[#1a1a1a]`}>
-          <iframe 
-            src={`${contentSource}#toolbar=0&view=FitH`} 
+          {/* Primary PDF viewer with fallback */}
+          <object 
+            data={`${contentSource}#toolbar=0&view=FitH`} 
+            type="application/pdf"
             className="w-full h-full border-none shadow-2xl"
             title={title}
-          />
+          >
+            {/* Fallback for browsers that don't support inline PDFs */}
+            <div className="w-full h-full flex flex-col items-center justify-center p-12 text-center bg-gray-900 text-white">
+              <div className="mb-6">
+                <span className="material-symbols-outlined text-6xl opacity-60">picture_as_pdf</span>
+              </div>
+              <h3 className="text-2xl font-bold mb-4">PDF Viewer Not Supported</h3>
+              <p className="mb-6 opacity-80">Your browser cannot display PDF files inline.</p>
+              <a 
+                href={contentSource} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors"
+              >
+                Download PDF
+              </a>
+            </div>
+          </object>
           <div className="absolute top-8 left-8 pointer-events-none">
              <span className={`px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.3em] border backdrop-blur-2xl ${isCyber ? 'bg-black/60 border-emerald-500/30 text-emerald-500 shadow-2xl' : 'bg-white/80 border-forest/10 text-forest shadow-xl'}`}>
                MISSION DECK: {title}
@@ -108,6 +220,8 @@ const MultimodalGallery: React.FC<MultimodalGalleryProps> = ({
                 src={contentSource} 
                 className="relative w-full h-auto object-cover rounded-[2rem] shadow-[0_40px_120px_-20px_rgba(0,0,0,0.5)] transition-all cursor-zoom-in hover:scale-[1.02]"
                 alt={title}
+                quality="90"
+                placeholder="blur"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = `https://picsum.photos/1600/1200?seed=info${week}`;
                 }}

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../App';
 import { ThemeMode } from '../types';
+import { getStandardizedPath } from '../src/utils/fileChecker';
 
 const AdminUploader: React.FC = () => {
   const { theme, updateAsset, courseState } = useApp();
@@ -15,47 +16,67 @@ const AdminUploader: React.FC = () => {
   const [status, setStatus] = useState<{ type: 'success' | 'error' | 'info'; message: string } | null>(null);
   const [urlInput, setUrlInput] = useState('');
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setIsUploading(true);
-    setStatus({ type: 'info', message: 'Initiating Standardized Ingestion Sequence...' });
+    setStatus({ type: 'info', message: 'Initiating Secure File Transfer Protocol...' });
 
-    // Simulate Server-Side Folder Mapping and Standardized Renaming
-    // Format: week{N}-{type}.{ext} -> /public/{folder}/
-    setTimeout(() => {
-      const folderMap = {
-        video: 'videos',
-        slides: 'decks',
-        infographic: 'images',
-        quiz: 'assets'
-      };
-
+    try {
+      // Get standardized path
       const extension = file.name.split('.').pop()?.toLowerCase() || 'dat';
+      const standardizedPath = getStandardizedPath(week, format, extension);
       
-      const labelMap = {
-        video: 'video',
-        slides: 'deck',
-        infographic: 'schema',
-        quiz: 'artifact'
-      };
+      // Create FormData for upload
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('week', week.toString());
+      formData.append('format', format);
+      formData.append('standardizedPath', standardizedPath);
       
-      const fileName = `week${week}-${labelMap[format]}.${extension}`;
-      const standardizedPath = `/public/${folderMap[format]}/${fileName}`;
+      // Simulate upload process (in a real app, this would POST to a server endpoint)
+      setStatus({ type: 'info', message: `Transferring ${file.name} to secure storage...` });
       
-      // Dynamically update the in-memory course manifest
+      // Simulate upload delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // In a real implementation, you would:
+      // const response = await fetch('/api/upload', {
+      //   method: 'POST',
+      //   body: formData
+      // });
+      
+      // For now, we'll simulate successful upload and update the course data
+      const fileName = standardizedPath.split('/').pop() || file.name;
+      const folderName = standardizedPath.split('/')[2];
+      
+      // Update the course manifest
       updateAsset(week, format, standardizedPath);
       
       setStatus({ 
         type: 'success', 
-        message: `DEPLOYMENT SUCCESS: Asset standardized to "${fileName}" and routed to virtual directory /public/${folderMap[format]}/` 
+        message: `✅ DEPLOYMENT COMPLETE: ${fileName} successfully deployed to /public/${folderName}/` 
       });
-      setIsUploading(false);
+      
+      // Clear the file input
+      e.target.value = '';
       
       // Auto-navigation to view the change
-      setTimeout(() => navigate(`/module/${week}`), 2500);
-    }, 1800);
+      setTimeout(() => {
+        setStatus(null);
+        navigate(`/module/${week}`);
+      }, 3000);
+      
+    } catch (error) {
+      console.error('Upload failed:', error);
+      setStatus({ 
+        type: 'error', 
+        message: `❌ UPLOAD FAILED: ${(error as Error).message || 'Unknown error occurred'}` 
+      });
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const handleUrlSubmit = () => {
