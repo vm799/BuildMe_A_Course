@@ -1,0 +1,115 @@
+
+{
+  "courseTitle": "AI Security Operations (SecOps)",
+  "frameworks": ["MAESTRO", "QSAF", "OWASP Agentic Top 10", "AICM"],
+  "weeks": [
+    {
+      "weekNumber": 1,
+      "title": "Agent Identity & Discovery",
+      "description": "This week focuses on foundational identity protocols for autonomous agents, moving beyond legacy service accounts to DID and VC frameworks.",
+      "assets": {
+        "video": {
+          "title": "Week 1 Video: Why Service Accounts Fail",
+          "path": "/assets/week1-intro.mp4",
+          "description": "Technical Script Outline: Exploring the architectural mismatch between legacy IAM and autonomous agent swarms."
+        },
+        "slides": {
+          "title": "Week 1 Slide Deck: Zero-Trust Identity",
+          "path": "/assets/week1-deck.pdf",
+          "description": "Technical Presentation (10-12 Slides): Implementing DID/VC/ANS for multi-agent discovery."
+        },
+        "infographic": {
+          "title": "Week 1 Infographic: Anatomy of an Agent ID",
+          "path": "/assets/week1-id-anatomy.png",
+          "description": "Visual Flowchart (DID/VC/ANS): Mapping the lifecycle of a secure agent credential."
+        },
+        "quiz": {
+          "title": "Week 1 Quiz: Fundamentals of Identity",
+          "url": "https://notebooklm.google.com/",
+          "description": "10 Multiple-Choice Questions covering discovery protocols and identity verification."
+        }
+      }
+    },
+    {
+      "weekNumber": 2,
+      "title": "Threat Modeling & MAESTRO",
+      "description": "A deep dive into layered threat modeling using the MAESTRO framework and the OWASP Agentic Top 10 vulnerabilities.",
+      "assets": {
+        "video": {
+          "title": "Week 2 Video: Hijacking the Agent Planner",
+          "path": "/assets/week2-redblue.mp4",
+          "description": "Red vs. Blue Walkthrough: Demonstrating how planning-layer vulnerabilities can lead to goal-state manipulation."
+        },
+        "slides": {
+          "title": "Week 2 Slide Deck: OWASP Agentic Top 10",
+          "path": "/assets/week2-deck.pdf",
+          "description": "Vulnerability & Mitigation Guide: Detailed breakdown of the most critical risks facing agentic systems."
+        },
+        "infographic": {
+          "title": "Week 2 Infographic: MAESTRO 7-Layer Model",
+          "path": "/assets/week2-maestro.png",
+          "description": "Concentric Ring Reference Diagram: Visualizing the protective shells of the MAESTRO framework."
+        },
+        "quiz": {
+          "title": "Week 2 Quiz: Threat Hunter Scenario",
+          "url": "https://notebooklm.google.com/",
+          "description": "5 Tactical Case Study Prompts: Can you identify the vector in these real-world scenarios?"
+        }
+      }
+    },
+    {
+      "weekNumber": 3,
+      "title": "Runtime Controls & Drift",
+      "description": "Implementing QSAF domain 10 runtime controls and monitoring systems to mitigate cognitive drift and logic starvation.",
+      "assets": {
+        "video": {
+          "title": "Week 3 Video: Logic Starvation",
+          "path": "/assets/week3-logic.mp4",
+          "description": "Analogy-driven Explainer: Why agents 'starve' for logic during high-throughput adversarial interference."
+        },
+        "slides": {
+          "title": "Week 3 Slide Deck: QSAF Domain 10 Controls",
+          "path": "/assets/week3-deck.pdf",
+          "description": "Architectural Deep Dive: Implementing BC-001 through BC-007 for real-time runtime monitoring."
+        },
+        "infographic": {
+          "title": "Week 3 Infographic: Cognitive Degradation",
+          "path": "/assets/week3-drift.png",
+          "description": "Dashboard-style Health Indicator: Visualizing the timeline of system collapse due to model drift."
+        },
+        "quiz": {
+          "title": "Week 3 Quiz: Mastering Cognitive Drift",
+          "url": "https://notebooklm.google.com/",
+          "description": "10 Logic-based Analysis Questions: Testing your ability to detect subtle performance shifts."
+        }
+      }
+    },
+    {
+      "weekNumber": 4,
+      "title": "Enterprise SecOps Mastery",
+      "description": "Navigating global AI compliance using the CSA AICM framework and comparing major enterprise agent platforms.",
+      "assets": {
+        "video": {
+          "title": "Week 4 Video: Global SecOps - Day in the Life",
+          "path": "/assets/week4-life.mp4",
+          "description": "Practitioner's Practical Guide: Managing global scale agent deployments with confidence."
+        },
+        "slides": {
+          "title": "Week 4 Slide Deck: CSA AICM Framework",
+          "path": "/assets/week4-deck.pdf",
+          "description": "5-Pillar Compliance Framework: Navigating the complexities of global AI security regulations."
+        },
+        "infographic": {
+          "title": "Week 4 Infographic: Platform Comparison",
+          "path": "/assets/week4-matrix.png",
+          "description": "Side-by-Side Matrix: Microsoft Azure vs. AWS Bedrock enterprise security features."
+        },
+        "quiz": {
+          "title": "Week 4 Quiz: Final Certification",
+          "url": "https://notebooklm.google.com/",
+          "description": "Comprehensive Exam: 20 questions to certify your mastery of the AI SecOps pipeline."
+        }
+      }
+    }
+  ]
+}
