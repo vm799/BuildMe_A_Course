@@ -26,5 +26,28 @@ Previous fix didn't work. Updated vercel.json:
 - Added `"framework": "vite"` to help Vercel detection
 - Changed rewrite pattern to `/((?!.*\\.).*)`  - excludes ANY path with a file extension (not just assets/)
 
+## Attempt 3
+Removed custom rewrites entirely - Vercel's Vite preset handles SPA routing automatically.
+Added explicit `outputDirectory: "dist"` to ensure Vercel serves from build output.
+
+```json
+{
+  "framework": "vite",
+  "outputDirectory": "dist"
+}
+```
+
+## Attempt 4
+Using Vercel routes API with explicit filesystem handler:
+```json
+{
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
+```
+This tells Vercel: serve static files first, then fallback to index.html for SPA routing.
+
 ## Status
-PENDING - Testing new configuration.
+PENDING - Testing routes configuration.
