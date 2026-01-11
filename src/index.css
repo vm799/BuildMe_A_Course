@@ -61,4 +61,4 @@
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #0df259; border-radius: 10px; }
-.scrollbar-hide::-webkit-scrollbar { display: none; }body { background: red; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
