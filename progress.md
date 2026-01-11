@@ -99,11 +99,13 @@ This tells Vercel: serve static files first, then fallback to index.html for SPA
 
 | File | Reference | Exists |
 |------|-----------|--------|
-| dist/index.html | `/assets/style-CFpeUQAX.css` | ✓ |
-| dist/index.html | `/assets/index-ClGaQeh5.js` | ✓ |
+| dist/index.html | `/assets/style-CFpeUQAX.css` | ✓ (19.94 KB) |
+| dist/index.html | `/assets/index-ClGaQeh5.js` | ✓ (554.9 KB) |
 
-**vercel.json:** `framework: null`, `outputDirectory: dist`, no rewrites ✓
+**vercel.json:** `framework: null`, `outputDirectory: dist`, NO rewrites ✓
 **vite.config.ts:** `base: '/'` ✓
 
+⚠️ **WARNING**: Do NOT add `routes: [{ src: "/(.*)", dest: "/index.html" }]` - this catches ALL requests including /assets/*.css and breaks CSS serving!
+
 ## Status
-RESOLVED - All assets verified. Deployment pipeline correct.
+RESOLVED - Configuration correct. If live site still broken: clear Vercel cache and redeploy.
