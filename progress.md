@@ -37,5 +37,17 @@ Added explicit `outputDirectory: "dist"` to ensure Vercel serves from build outp
 }
 ```
 
+## Attempt 4
+Using Vercel routes API with explicit filesystem handler:
+```json
+{
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
+```
+This tells Vercel: serve static files first, then fallback to index.html for SPA routing.
+
 ## Status
-PENDING - Testing minimal config.
+PENDING - Testing routes configuration.
