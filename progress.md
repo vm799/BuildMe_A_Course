@@ -26,5 +26,16 @@ Previous fix didn't work. Updated vercel.json:
 - Added `"framework": "vite"` to help Vercel detection
 - Changed rewrite pattern to `/((?!.*\\.).*)`  - excludes ANY path with a file extension (not just assets/)
 
+## Attempt 3
+Removed custom rewrites entirely - Vercel's Vite preset handles SPA routing automatically.
+Added explicit `outputDirectory: "dist"` to ensure Vercel serves from build output.
+
+```json
+{
+  "framework": "vite",
+  "outputDirectory": "dist"
+}
+```
+
 ## Status
-PENDING - Testing new configuration.
+PENDING - Testing minimal config.
