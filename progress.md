@@ -122,5 +122,15 @@ This tells Vercel: serve static files first, then fallback to index.html for SPA
 }
 ```
 
+## Attempt 11 - COMPLETE FIX ✓
+
+| File | Route | Status |
+|------|-------|--------|
+| dist/assets/style-CFpeUQAX.css | `/assets/*` | ✓ |
+| dist/assets/index-ClGaQeh5.js | `/assets/*` | ✓ |
+| dist/data/course.json | `/data/*` | ✓ |
+
+**vercel.json:** `@vercel/static-build` + explicit routes for `/assets/*`, `/data/*`, SPA fallback ✓
+
 ## Status
-DEPLOYED - Assets route serves CSS/JS before SPA fallback catches remaining routes.
+RESOLVED - CSS, JS, and JSON all served via explicit routes before SPA fallback.
