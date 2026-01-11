@@ -1,13 +1,18 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/', // CRITICAL: Forces absolute paths starting with /
+  base: './', // Use relative paths to avoid /assets/ mismatch on Vercel
   build: {
     outDir: 'dist',
-    assetsDir: 'assets',
-    cssCodeSplit: false, // FORCED: Combines all CSS into one file so it's harder to lose
-    sourcemap: false,
-  }
-});
+    rollupOptions: {
+      output: {
+        assetFileNames: '[name][extname]',
+        chunkFileNames: '[name].js',
+        entryFileNames: '[name].js',
+      },
+    },
+  },
+})
+
