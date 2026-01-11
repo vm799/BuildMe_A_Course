@@ -95,5 +95,15 @@ This tells Vercel: serve static files first, then fallback to index.html for SPA
 
 **If CSS still not applying:** Clear Vercel build cache or check project settings override.
 
+## FINAL AUDIT - VERIFIED ✓
+
+| File | Reference | Exists |
+|------|-----------|--------|
+| dist/index.html | `/assets/style-CFpeUQAX.css` | ✓ |
+| dist/index.html | `/assets/index-ClGaQeh5.js` | ✓ |
+
+**vercel.json:** `framework: null`, `outputDirectory: dist`, no rewrites ✓
+**vite.config.ts:** `base: '/'` ✓
+
 ## Status
-RESOLVED - Pipeline: `npm run build` → `dist/` → Vercel serves with CSS.
+RESOLVED - All assets verified. Deployment pipeline correct.
