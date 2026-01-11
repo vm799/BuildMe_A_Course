@@ -79,5 +79,8 @@ This tells Vercel: serve static files first, then fallback to index.html for SPA
 }
 ```
 
+## Attempt 7
+CSS serves 200 but styles not applying. Added explicit headers config for assets. Triggered fresh deploy.
+
 ## Status
-RESOLVED - No rewrites blocking assets. Vercel serves `dist/` with default static file handling.
+TESTING - Verified dist/index.html links to /assets/style-CFpeUQAX.css correctly. Fresh build pushed.
