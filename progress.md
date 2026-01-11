@@ -49,5 +49,23 @@ Using Vercel routes API with explicit filesystem handler:
 ```
 This tells Vercel: serve static files first, then fallback to index.html for SPA routing.
 
+## Attempt 5 - FINAL FIX
+**Root cause**: Missing `outputDirectory` meant Vercel served from root, not `dist/`. Legacy `routes` API conflicted with modern build.
+
+**Structural cleanup**:
+- Deleted `dist-minimal/` (stale build)
+- Deleted `package-simple.json`, `package-vercel.json`, `final-verification.js` (redundant)
+
+**Fixed vercel.json**:
+```json
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
+```
+
 ## Status
-PENDING - Testing routes configuration.
+RESOLVED - Vercel now explicitly builds to and serves from `dist/`.
