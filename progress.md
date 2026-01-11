@@ -79,8 +79,13 @@ This tells Vercel: serve static files first, then fallback to index.html for SPA
 }
 ```
 
-## Attempt 7
-CSS serves 200 but styles not applying. Added explicit headers config for assets. Triggered fresh deploy.
+## Attempt 8 - FINAL
+**Root cause:** Vercel auto-detected wrong framework, served source files instead of dist/. Stale config files caused confusion.
+
+**Fix:**
+- Added `"framework": null` to force explicit build config
+- Deleted stale configs: `vercel-improved.json`, `vercel-modern.json`, `vercel-spa.json`, `vite-minimal.config.js`
+- Verified: `npm run build` → `dist/index.html` correctly links `/assets/style-*.css`
 
 ## Status
-TESTING - Verified dist/index.html links to /assets/style-CFpeUQAX.css correctly. Fresh build pushed.
+RESOLVED - Build mode enforced. dist/ served with CSS.
