@@ -107,5 +107,20 @@ This tells Vercel: serve static files first, then fallback to index.html for SPA
 
 ⚠️ **WARNING**: Do NOT add `routes: [{ src: "/(.*)", dest: "/index.html" }]` - this catches ALL requests including /assets/*.css and breaks CSS serving!
 
+## Attempt 10 - @vercel/static-build
+**Root cause:** Default Vercel config not properly serving static assets from dist/.
+
+**Fix:** Using `@vercel/static-build` with explicit asset route before SPA fallback:
+```json
+{
+  "version": 2,
+  "builds": [{ "src": "package.json", "use": "@vercel/static-build", "config": { "distDir": "dist" } }],
+  "routes": [
+    { "src": "/assets/(.*)", "dest": "/assets/$1" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
+```
+
 ## Status
-RESOLVED - Configuration correct. If live site still broken: clear Vercel cache and redeploy.
+DEPLOYED - Assets route serves CSS/JS before SPA fallback catches remaining routes.
