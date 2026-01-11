@@ -67,5 +67,17 @@ This tells Vercel: serve static files first, then fallback to index.html for SPA
 }
 ```
 
+## Attempt 6 - ACTUAL FIX
+**Root cause:** The rewrite `/(.*) -> /index.html` was catching ALL requests including `/assets/*.css`, blocking static file serving.
+
+**Fix:** Removed rewrites entirely. Vercel serves static files from `outputDirectory` automatically without needing custom routing.
+
+```json
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist"
+}
+```
+
 ## Status
-RESOLVED - Vercel now explicitly builds to and serves from `dist/`.
+RESOLVED - No rewrites blocking assets. Vercel serves `dist/` with default static file handling.
