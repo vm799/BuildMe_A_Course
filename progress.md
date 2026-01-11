@@ -21,5 +21,10 @@ Updated `vercel.json` to exclude the `assets/` directory from rewrites:
 - `index.html` - Removed debug CSS test elements
 - `src/index.css` - Removed debug `body { background: red; }`
 
+## Attempt 2
+Previous fix didn't work. Updated vercel.json:
+- Added `"framework": "vite"` to help Vercel detection
+- Changed rewrite pattern to `/((?!.*\\.).*)`  - excludes ANY path with a file extension (not just assets/)
+
 ## Status
-RESOLVED - Build verified, CSS now correctly served in deployment.
+PENDING - Testing new configuration.
